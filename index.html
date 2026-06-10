@@ -33,7 +33,13 @@ async function checkEmail() {
     const data = await response.json();
 
     document.getElementById("result").innerHTML =
-        data.email;
+`
+Email: ${data.email}<br>
+Exists in List: ${data.exists_in_list}<br>
+Exists in Set: ${data.exists_in_set}<br>
+List Time: ${data.list_time_microseconds}<br>
+Set Time: ${data.set_time_microseconds}
+`;
 }
 </script>
 </html>
