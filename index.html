@@ -11,4 +11,14 @@
 <button>Check Email</button>
 
 </body>
+<script>
+function checkEmail() {
+    const email = document.getElementById("email").value;
+
+    if(email === ""){
+        document.getElementById("result").innerHTML =
+        "Please enter an email";
+    }
+}
+</script>
 </html>
