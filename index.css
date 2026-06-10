@@ -1,26 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
 body{
+    min-height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
+    background: linear-gradient(135deg, #141e30, #243b55);
+    padding:20px;
 }
 
 .card{
-    width:400px;
-    padding:30px;
-    border-radius:15px;
-    box-shadow:0 0 15px gray;
+    width:450px;
+    padding:35px;
+    border-radius:25px;
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.2);
+    box-shadow:0 15px 35px rgba(0,0,0,0.4);
+    animation:fadeIn 0.8s ease;
 }
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+h2{
+    text-align:center;
+    color:#fff;
+    margin-bottom:25px;
+    font-size:28px;
+    font-weight:600;
+    letter-spacing:1px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    margin-bottom:15px;
+    border:none;
+    border-radius:12px;
+    background:rgba(255,255,255,0.15);
+    color:#fff;
+    font-size:16px;
+    outline:none;
+    transition:0.3s;
+}
+
+input::placeholder{
+    color:rgba(255,255,255,0.7);
+}
+
+input:focus{
+    background:rgba(255,255,255,0.25);
+    box-shadow:0 0 12px rgba(255,255,255,0.3);
+}
+
+button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#ff6b6b,#ff8e53);
+    color:white;
+    font-size:17px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.3s ease;
+}
+
+button:hover{
+    transform:translateY(-3px);
+    box-shadow:0 10px 25px rgba(255,107,107,0.5);
+}
+
+button:active{
+    transform:scale(0.98);
+}
+
 .result-box{
     margin-top:20px;
-    padding:15px;
-    border-radius:10px;
+    padding:18px;
+    border-radius:15px;
+    background:rgba(255,255,255,0.95);
+    color:#333;
+    display:none;
+    animation:slideUp 0.5s ease;
+}
+
+@keyframes slideUp{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
 }
 
 .success{
-    border-left:5px solid green;
+    border-left:6px solid #00c853;
 }
 
 .error{
-    border-left:5px solid red;
+    border-left:6px solid #ff1744;
+}
+
+.badge{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+    color:white;
+    margin-bottom:10px;
+}
+
+.badge-success{
+    background:#00c853;
+}
+
+.badge-error{
+    background:#ff1744;
+}
+.right{
+    color: green;
+}
+.wrong{
+    color: red;
 }
