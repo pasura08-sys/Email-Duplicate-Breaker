@@ -1,71 +1,209 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Email Duplicate Checker</title>
-    <link rel="stylesheet" href="index.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Duplicate Checker</title>
+
+<link rel="stylesheet" href="index.css">
 </head>
+
 <body>
+
 <div class="card">
+
     <h2>Email Duplicate Checker</h2>
 
-    <input id="email"
-           placeholder="Enter email address">
+
+    <input
+        type="email"
+        id="email"
+        placeholder="Enter email address"
+    >
 
     <button onclick="checkEmail()">
         Check Email
     </button>
 
-    <div id="result"></div>
+    <div id="result" class="result-box"></div>
+
 </div>
-</body>
+
 <script>
+
 async function checkEmail() {
 
-    const email = document.getElementById("email").value;
+    const email =
+        document.getElementById("email")
+        .value
+        .trim();
 
-    const response = await fetch(
-        "http://127.0.0.1:5000/check-email",
-        {
-            method: "POST",
-            headers: {
-                "Content-Type":"application/json"
-            },
-            body: JSON.stringify({
-                email: email
-            })
-        }
-    );
+    const resultBox =
+        document.getElementById("result");
 
-    const data = await response.json();
+    if (!email) {
 
-    document.getElementById("result").innerHTML =
-`
-Email: ${data.email}<br>
-Exists in List: ${data.exists_in_list}<br>
-Exists in Set: ${data.exists_in_set}<br>
-List Time: ${data.list_time_microseconds}<br>
-Set Time: ${data.set_time_microseconds}
+        resultBox.style.display = "block";
+
+        resultBox.innerHTML = `
+        <div class="status-card">
+
+            <div class="status-top">
+
+                <div class="status-icon">
+                    ⚠️
+                </div>
+
+                <div>
+                    <h3 >Missing Email</h3>
+                    <p>Please enter an email address</p>
+                </div>
+
+            </div>
+
+        </div>
+        `;
+
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                "http://127.0.0.1:5000/check-email",
+                {
+                    method:"POST",
+
+                    headers:{
+                        "Content-Type":
+                        "application/json"
+                    },
+
+                    body:JSON.stringify({
+                        email:email
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        const isDuplicate =
+            data.exists_in_list;
+
+        resultBox.style.display = "block";
+
+      resultBox.innerHTML = `
+
+<div class="status-card">
+
+    <div class="status-top">
+
+        <div class="status-icon">
+            ${isDuplicate ? "⚠️" : "✅"}
+        </div>
+
+        <div>
+
+            <h3>
+                ${
+                    isDuplicate
+                    ? "Duplicate Email Found"
+                    : "Email Available"
+                }
+            </h3>
+
+            <p>${data.email}</p>
+
+        </div>
+
+    </div>
+
+    <div class="status-section">
+
+        <h4>Status</h4>
+
+        <div class="status-item">
+            ${
+                data.exists_in_list
+                ? "• Email already exists in the database"
+                : "• Email not found in the database"
+            }
+        </div>
+
+        <div class="status-item">
+            ${
+                data.exists_in_list
+                ? "• Registration blocked"
+                : "• Ready for registration"
+            }
+        </div>
+
+    </div>
+
+    <div class="performance-section">
+
+        <h4>Performance Analysis</h4>
+
+        <div class="metric">
+            <span>List Lookup</span>
+            <strong>
+                ${Number(data.list_time_microseconds).toFixed(2)} µs
+            </strong>
+        </div>
+
+        <div class="metric">
+            <span>Set Lookup</span>
+            <strong>
+                ${Number(data.set_time_microseconds).toFixed(2)} µs
+            </strong>
+        </div>
+
+    </div>
+
+</div>
+
 `;
-try {
 
-   const response = await fetch(
-      "http://127.0.0.1:5000/check-email",
-      {
-        method:"POST",
-        headers:{
-            "Content-Type":"application/json"
-        },
-        body:JSON.stringify({email})
-      }
-   );
+    }
 
-   const data = await response.json();
+    catch(error){
 
+        resultBox.style.display =
+            "block";
+
+        resultBox.innerHTML = `
+
+        <div class="status-card">
+
+            <div class="status-top">
+
+                <div class="status-icon">
+                    ❌
+                </div>
+
+                <div>
+
+                    <h3>
+                        Server Error
+                    </h3>
+
+                    <p>
+                        Unable to connect to Flask API
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        `;
+    }
 }
-catch(error){
-    document.getElementById("result").innerHTML =
-    "Unable to connect to server";
-}
-}
+
 </script>
+
+</body>
 </html>
