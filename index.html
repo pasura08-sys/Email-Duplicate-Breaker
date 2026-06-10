@@ -40,6 +40,26 @@ Exists in Set: ${data.exists_in_set}<br>
 List Time: ${data.list_time_microseconds}<br>
 Set Time: ${data.set_time_microseconds}
 `;
+try {
+
+   const response = await fetch(
+      "http://127.0.0.1:5000/check-email",
+      {
+        method:"POST",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({email})
+      }
+   );
+
+   const data = await response.json();
+
+}
+catch(error){
+    document.getElementById("result").innerHTML =
+    "Unable to connect to server";
+}
 }
 </script>
 </html>
